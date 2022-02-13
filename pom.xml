@@ -16,7 +16,11 @@
     </parent>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!--properties节点中设置docker镜像的前缀“springboot”-->
         <docker.image.prefix>registry.cn-hangzhou.aliyuncs.com/dockerimages_wanyan_jenkins_test</docker.image.prefix>
+        <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
@@ -24,6 +28,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <!-- Junit -->
@@ -34,16 +44,19 @@
         </dependency>
     </dependencies>
 
-    <!-- docker插件 -->
     <build>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- tag::plugin[] -->
+            <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>0.4.13</version>
                 <configuration>
                     <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <!--docker文件所在的目录-->
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <resources>
                         <resource>
@@ -54,7 +67,11 @@
                     </resources>
                 </configuration>
             </plugin>
+            <!-- end::plugin[] -->
+
         </plugins>
+
+        <!--<finalName>gs-spring-boot-docker-master</finalName>-->
     </build>
 
 </project>

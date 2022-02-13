@@ -1,5 +1,6 @@
 FROM java:8
-
-VOLUME /data/docker/wanyan_test
-ADD wanyan_test-dev.jar wanyan_test.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/wanyan_test.jar"]
+VOLUME /tmp
+ADD wanyan_test-dev.jar app.jar
+RUN sh -c 'touch /app.jar'
+ENV JAVA_OPTS=""
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
